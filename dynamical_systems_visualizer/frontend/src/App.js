@@ -6,7 +6,9 @@ const App = () => {
   const [system, setSystem] = useState('lorenz');
   const [params, setParams] = useState({
     lorenz: { sigma: 10, rho: 28, beta: 8/3 },
-    rossler: { a: 0.2, b: 0.2, c: 5.7 }
+    rossler: { a: 0.2, b: 0.2, c: 5.7 },
+    henon: { a: 1.4, b: 0.3 },
+    logistic: { r: 3.8, x0: 0.1 }
   });
 
   useEffect(() => {
@@ -49,6 +51,8 @@ const App = () => {
       <select value={system} onChange={(e) => setSystem(e.target.value)}>
         <option value="lorenz">Lorenz System</option>
         <option value="rossler">Rössler System</option>
+        <option value="henon">Hénon Map</option>
+        <option value="logistic">Logistic Map</option>
       </select>
       <div>
         {Object.entries(params[system]).map(([key, value]) => (
