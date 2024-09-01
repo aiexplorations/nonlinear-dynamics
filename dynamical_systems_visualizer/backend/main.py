@@ -1,4 +1,3 @@
-# backend/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -38,6 +37,7 @@ def rossler_system(state, t, a, b, c):
 
 def henon_system(state, t, a, b):
     x, y = state
+    # Henon map is a discrete system, hence t is not used, but kept for consistency
     return [
         y + 1 - a * x**2,
         b * x
@@ -49,51 +49,63 @@ def logistic_system(state, t, r):
 
 @app.post("/api/generate_data")
 async def generate_data(system_params: SystemParams):
-    if system_params.system == "lorenz":
-        sigma = system_params.params.get('sigma', 10)
-        rho = system_params.params.get('rho', 28)
-        beta = system_params.params.get('beta', 8/3)
-        
-        initial_state = [1, 1, 1]
-        t = np.linspace(0, 100, 10000)
-        
-        states = odeint(lorenz_system, initial_state, t, args=(sigma, rho, beta))
+    system = system_params.system
+    params = system_params.params
+
+    t = np.linspace(0, 100, 10000)
     
-    elif system_params.system == "rossler":
-        a = system_params.params.get('a', 0.2)
-        b = system_params.params.get('b', 0.2)
-        c = system_params.params.get('c', 5.7)
-        
+    if system == "lorenz":
+        sigma = params.get('sigma', 10)
+        rho = params.get('rho', 28)
+        beta = params.get('beta', 8/3)
         initial_state = [1, 1, 1]
-        t = np.linspace(0, 500, 10000)
-        
+        states = odeint(lorenz_system, initial_state, t, args=(sigma, rho, beta))
+        return {
+            "x": states[:, 0].tolist(),
+            "y": states[:, 1].tolist(),
+            "z": states[:, 2].tolist(),
+        }
+    
+    elif system == "rossler":
+        a = params.get('a', 0.2)
+        b = params.get('b', 0.2)
+        c = params.get('c', 5.7)
+        initial_state = [1, 1, 1]
         states = odeint(rossler_system, initial_state, t, args=(a, b, c))
+        return {
+            "x": states[:, 0].tolist(),
+            "y": states[:, 1].tolist(),
+            "z": states[:, 2].tolist(),
+        }
+    
+    elif system == "henon":
+        a = params.get('a', 1.4)
+        b = params.get('b', 0.3)
+        initial_state = [0, 0]
+        num_steps = 10000
+        states = np.zeros((num_steps, 2))
+        states[0] = initial_state
+        for i in range(1, num_steps):
+            states[i] = henon_system(states[i-1], None, a, b)
+        return {
+            "x": states[:, 0].tolist(),
+            "y": states[:, 1].tolist(),
+        }
+    
+    elif system == "logistic":
+        r = params.get('r', 3.8)
+        x0 = params.get('x0', 0.1)
+        num_steps = 10000
+        x = np.zeros(num_steps)
+        x[0] = x0
+        for i in range(1, num_steps):
+            x[i] = logistic_system(x[i-1], None, r)
+        return {
+            "x": x.tolist(),
+        }
 
-    elif system_params.system == "henon":
-        a = system_params.params.get('a', 1.4)
-        b = system_params.params.get('b', 0.3)
-        
-        initial_state = [1, 1]
-        t = np.linspace(0, 100, 10000)
-        
-        states = odeint(henon_system, initial_state, t, args=(a, b))
+    return {"error": "System not recognized"}
 
-    elif system_params.system == "logistic":
-        r = system_params.params.get('r', 3.9)
-        
-        initial_state = [0.5]
-        t = np.linspace(0, 100, 10000)
-        
-        states = odeint(logistic_system, initial_state, t, args=(r,))
-
-    else:
-        return {"error": "Unknown system"}
-
-    return {
-        "x": states[:, 0].tolist(),
-        "y": states[:, 1].tolist(),
-        "z": states[:, 2].tolist()
-    }
 
 
 if __name__ == "__main__":

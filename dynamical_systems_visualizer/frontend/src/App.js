@@ -45,6 +45,59 @@ const App = () => {
     }));
   };
 
+  const renderPlot = () => {
+    if (!data) return null;
+
+    switch (system) {
+      case 'lorenz':
+      case 'rossler':
+        return (
+          <Plot
+            data={[
+              {
+                x: data.x,
+                y: data.y,
+                z: data.z,
+                type: 'scatter3d',
+                mode: 'lines',
+              },
+            ]}
+            layout={{ title: `${system.charAt(0).toUpperCase() + system.slice(1)} System` }}
+          />
+        );
+      case 'henon':
+        return (
+          <Plot
+            data={[
+              {
+                x: data.x,
+                y: data.y,
+                type: 'scatter',
+                mode: 'markers',
+              },
+            ]}
+            layout={{ title: 'Hénon Map' }}
+          />
+        );
+      case 'logistic':
+        return (
+          <Plot
+            data={[
+              {
+                x: Array.from({ length: data.x.length }, (_, i) => i),
+                y: data.x,
+                type: 'scatter',
+                mode: 'lines',
+              },
+            ]}
+            layout={{ title: 'Logistic Map' }}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="App">
       <h1>Dynamical Systems Visualizer</h1>
@@ -55,49 +108,20 @@ const App = () => {
         <option value="logistic">Logistic Map</option>
       </select>
       <div>
-        {Object.entries(params[system]).map(([key, value]) => (
-          <div key={key}>
-            <label>{key}: </label>
+        {Object.keys(params[system]).map(param => (
+          <div key={param}>
+            <label>{param}:</label>
             <input
               type="number"
-              name={key}
-              value={value}
+              name={param}
+              value={params[system][param]}
               onChange={handleParamChange}
-              step="0.1"
             />
           </div>
         ))}
       </div>
-      {data && (
-        <Plot
-          data={[
-            {
-              type: 'scatter3d',
-              mode: 'lines',
-              x: data.x,
-              y: data.y,
-              z: data.z,
-              opacity: 0.8,
-              line: {
-                width: 2,
-                color: data.x.map((_, i) => i),
-                colorscale: 'Viridis'
-              }
-            }
-          ]}
-          layout={{
-            width: 800,
-            height: 600,
-            title: `${system.charAt(0).toUpperCase() + system.slice(1)} System`,
-            scene: {
-              xaxis: { title: 'X' },
-              yaxis: { title: 'Y' },
-              zaxis: { title: 'Z' }
-            }
-          }}
-        />
-      )}
-    </div>
+      {renderPlot()}
+    </div>                
   );
 };
 
