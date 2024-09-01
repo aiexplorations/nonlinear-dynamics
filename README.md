@@ -6,6 +6,16 @@ A repo for exploring nonlinear dynamics, chaos, fractals and related topics usin
 
 The dynamical systems visualizer is a small app within this repo which can be run on Docker containers. It has great potential to model and visualize all kinds of chaotic and dynamical systems that can be described in two or three dimensions.
 
+## Visualizations
+
+The dynamical systems visualizer provides a collection of visualizations for different types of dynamical systems. Here are two examples:
+
+![Image 1](/dynamical_systems_visualizer/viz/Screenshot_20240829_011520.png)
+
+![Image 2](dynamical_systems_visualizer/viz/Screenshot_20240829_011557.png)
+
+These visualizations showcase the complex and fascinating behavior exhibited by nonlinear dynamical systems. By exploring these visualizations, you can gain insights into the dynamics, chaos, and fractals that arise in various mathematical models.
+
 ## Frontend
 
 The frontend of the dynamical systems visualizer is built using modern web technologies such as HTML, CSS, and JavaScript. It utilizes popular frameworks like React or Angular to create a responsive and interactive user interface. The frontend is responsible for rendering the visualizations, handling user inputs, and communicating with the backend.

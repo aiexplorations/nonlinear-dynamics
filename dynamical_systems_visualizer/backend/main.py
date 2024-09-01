@@ -36,6 +36,17 @@ def rossler_system(state, t, a, b, c):
         b + z * (x - c)
     ]
 
+def henon_system(state, t, a, b):
+    x, y = state
+    return [
+        y + 1 - a * x**2,
+        b * x
+    ]
+
+def logistic_system(state, t, r):
+    x = state
+    return r * x * (1 - x)
+
 @app.post("/api/generate_data")
 async def generate_data(system_params: SystemParams):
     if system_params.system == "lorenz":
@@ -57,7 +68,24 @@ async def generate_data(system_params: SystemParams):
         t = np.linspace(0, 500, 10000)
         
         states = odeint(rossler_system, initial_state, t, args=(a, b, c))
-    
+
+    elif system_params.system == "henon":
+        a = system_params.params.get('a', 1.4)
+        b = system_params.params.get('b', 0.3)
+        
+        initial_state = [1, 1]
+        t = np.linspace(0, 100, 10000)
+        
+        states = odeint(henon_system, initial_state, t, args=(a, b))
+
+    elif system_params.system == "logistic":
+        r = system_params.params.get('r', 3.9)
+        
+        initial_state = [0.5]
+        t = np.linspace(0, 100, 10000)
+        
+        states = odeint(logistic_system, initial_state, t, args=(r,))
+
     else:
         return {"error": "Unknown system"}
 
@@ -66,6 +94,7 @@ async def generate_data(system_params: SystemParams):
         "y": states[:, 1].tolist(),
         "z": states[:, 2].tolist()
     }
+
 
 if __name__ == "__main__":
     import uvicorn
