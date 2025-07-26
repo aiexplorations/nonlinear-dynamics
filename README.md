@@ -1,38 +1,46 @@
 # Nonlinear Dynamics and Chaos
 
-A repo for exploring nonlinear dynamics, chaos, fractals and related topics using Python code.
+A repository for exploring nonlinear dynamics, chaos, fractals, and related topics using Python.
 
 # Dynamical Systems Visualizer
 
-The dynamical systems visualizer is a small app within this repo which can be run on Docker containers. It has great potential to model and visualize all kinds of chaotic and dynamical systems that can be described in two or three dimensions.
+The Dynamical Systems Visualizer is a modular, containerized web application for modeling and visualizing a variety of chaotic and dynamical systems in two or three dimensions. The app is fully Dockerized and can be run locally or deployed to the cloud with ease.
 
 ## Visualizations
 
-The dynamical systems visualizer provides a collection of visualizations for different types of dynamical systems. Here are two examples:
+The visualizer provides interactive 3D renderings of several well-known dynamical systems. Example screenshots:
 
 ![Image 1](/dynamical_systems_visualizer/viz/Screenshot_20240829_011520.png)
-
 ![Image 2](dynamical_systems_visualizer/viz/Screenshot_20240829_011557.png)
 
-These visualizations showcase the complex and fascinating behavior exhibited by nonlinear dynamical systems. By exploring these visualizations, you can gain insights into the dynamics, chaos, and fractals that arise in various mathematical models.
+These visualizations highlight the rich and complex behaviors of nonlinear systems, including chaos and fractal structures.
 
 ## Frontend
 
-The frontend of the dynamical systems visualizer is built using modern web technologies such as HTML, CSS, and JavaScript. It utilizes popular frameworks like React or Angular to create a responsive and interactive user interface. The frontend is responsible for rendering the visualizations, handling user inputs, and communicating with the backend.
+- **Lightweight & High-Performance:** Built with vanilla JavaScript and Three.js, without heavy frameworks.
+- **Interactive Controls:** Real-time camera manipulation (rotate, pan, zoom) and parameter adjustment.
+- **Responsive Design:** Works on both desktop and mobile devices.
+- **Multiple Systems Supported:** Lorenz, Rössler, Chua, and Chen attractors, with more planned.
+- **Development:** Easily served locally with any static file server or via Docker.
 
 ## Backend
 
-The backend of the dynamical systems visualizer is implemented using a server-side programming language such as Python, Node.js, or Java. It handles the business logic, data processing, and serves as the intermediary between the frontend and the data sources. The backend is responsible for fetching the required data, performing calculations, and providing the necessary APIs for the frontend to consume.
+- **Modern Python API:** Implemented with FastAPI and Pydantic for robust, type-safe endpoints.
+- **Dynamical System Computation:** Supports multiple systems (Lorenz, Rössler, Chua, Chen, etc.) with real-time parameterization.
+- **CORS Enabled:** Allows seamless communication with the frontend.
+- **Containerized:** Runs in its own Docker container for isolation and reproducibility.
 
 ## Docker
 
-Docker is used to containerize the dynamical systems visualizer application. It allows for easy deployment and scalability by packaging the frontend, backend, and their dependencies into separate containers. Docker provides a consistent environment for running the application, ensuring that it behaves the same across different platforms and environments. With Docker, the dynamical systems visualizer can be easily deployed on various cloud platforms or on-premises servers.
+- **Separation of Concerns:** Frontend and backend are containerized separately for modular deployment.
+- **Simple Orchestration:** Use `docker-compose` to build and run the entire application stack.
+- **Consistent Environments:** Ensures identical behavior across platforms and deployments.
 
-# Future Developments
+## Future Developments
 
-Code in the scripts folder provides a way to build common visualization capabilities which can then be re-used for different kinds of dynamical systems. This has to be applied to make existing code more modular.
+- Refactor and modularize visualization code for easier extension.
+- Add more dynamical systems and visualization types.
+- Expand unit testing and improve logging for reliability.
+- Enhance user interface and add more interactive features.
 
-A few tests and better logging need to be implemented.
-
-More dynamical systems have to be brought into this app.
-
+See the `dynamical_systems_visualizer` directory for up-to-date code and documentation.
