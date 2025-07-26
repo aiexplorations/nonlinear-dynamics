@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamical Systems 3D Visualizer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+            overflow: hidden;
+        }
+        
+        #container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        #canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            min-width: 250px;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #00ff88;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background: #2a2a2a;
+            color: #ffffff;
+            font-size: 14px;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #00ff88;
+        }
+        
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #00ff88;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #00cc6a;
+        }
+        
+        #info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            font-size: 12px;
+            color: #ccc;
+        }
+        
+        .param-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .param-group input {
+            flex: 1;
+        }
+        
+        .param-group label {
+            min-width: 60px;
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <canvas id="canvas"></canvas>
+        
+        <div id="loading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #00ff88; font-size: 18px; z-index: 1001;">
+            Loading 3D Visualization...
+        </div>
+        
+        <div id="controls">
+            <h2 style="margin-top: 0; color: #00ff88;">Dynamical Systems</h2>
+            
+            <div class="control-group">
+                <label for="system">System:</label>
+                <select id="system">
+                    <option value="lorenz">Lorenz Attractor</option>
+                    <option value="rossler">Rössler Attractor</option>
+                    <option value="chua">Chua Circuit</option>
+                    <option value="chen">Chen System</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label>Parameters:</label>
+                <div id="params"></div>
+            </div>
+            
+            <div class="control-group">
+                <button id="update">Update Visualization</button>
+            </div>
+            
+            <div class="control-group">
+                <button id="reset">Reset Camera</button>
+            </div>
+        </div>
+        
+        <div id="info">
+            <div>Mouse: Rotate | Scroll: Zoom | Right-click: Pan</div>
+            <div id="stats"></div>
+        </div>
+    </div>
+    
+    <script src="lib/three.min.js"></script>
+    <script>
+        // Check if Three.js loaded successfully
+        if (typeof THREE === 'undefined') {
+            console.error('Three.js failed to load');
+            document.body.innerHTML = '<div style="color: white; text-align: center; padding: 50px;">Error: Three.js library failed to load. Please check the file is present.</div>';
+        } else {
+            console.log('Three.js loaded successfully');
+        }
+    </script>
+    <script src="js/visualizer.js"></script>
+</body>
+</html> 
